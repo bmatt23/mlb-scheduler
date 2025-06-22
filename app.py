@@ -78,7 +78,7 @@ if st.session_state.results:
 
     df_selected = df[df["Itinerary"] == (selected_itinerary)].sort_values(by="Date", ascending=True)
     df_selected["Local Time"] = df_selected["Local Time"].apply(pretty_time)
-    st.dataframe(df_selected, use_container_width=True)
+    st.dataframe(df_selected.drop(columns =['Start Date', 'End Date']), use_container_width=True)
 
     m = folium.Map(location=[39.5, -98.35], zoom_start=4)
 
