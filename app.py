@@ -25,17 +25,19 @@ st.title("MLB Itinerary Finder")
 
 st.sidebar.header("Trip Filters")
 selected_teams = st.sidebar.multiselect("Teams you want to see", sorted(games_df["Team"].unique()))
-selected_days = st.sidebar.multiselect("Preferred days of the week", 
+selected_days = st.sidebar.multiselect("Preferred days of athe week", 
     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
-months = ["All Months", "March", "April", "May", "June", "July", "August", "September", "October"]
-selected_month = st.sidebar.multiselect("Filter by month", months)
+months = ["March", "April", "May", "June", "July", "August", "September", "October"]
+selected_months = st.sidebar.multiselect("Filter by month", months)
+if selected_months:
+    games_df = games_df[games_df["Date"].dt.month_name().isin(selected_months)]
 max_span = st.sidebar.slider("Max number of days", 1, 14, len(selected_teams) or 3)
 
 home_teams = st.sidebar.multiselect("Must be home team", selected_teams)
 away_teams = st.sidebar.multiselect("Must be away team", selected_teams)
 
-if selected_month != "All Months":
-    games_df = games_df[games_df["Date"].dt.month_name() == selected_month]
+
+    
 
 
 if 'results' not in st.session_state:
