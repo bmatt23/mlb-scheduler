@@ -72,7 +72,8 @@ def find_team_itineraries(
                     "Day": row["Day"],
                     "Opponent": row["Opponent"],
                     "Location": row["Location"],
-                    "Stadium": row["Stadium"]
+                    "Stadium": row["Stadium"],
+                    "Local Time": row["Local Time"]
                 })
             if success:
                 valid_itineraries.append({
@@ -96,11 +97,11 @@ def itineraries_to_dataframe(itineraries):
                 "End Date": itin["End Date"].date(),
                 "Team": game["Team"],
                 "Date": game["Date"].date(),
-                "Local Time": game["Local Time"],
                 "Day": game["Day"],
                 "Opponent": game["Opponent"],
                 "Location": game["Location"],
-                "Stadium": game["Stadium"]
+                "Stadium": game["Stadium"],
+                "Local Time": game["Local Time"],
             })
 
     return pd.DataFrame(all_rows)
