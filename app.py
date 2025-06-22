@@ -83,13 +83,21 @@ if st.session_state.results:
     route = []
     for _, row in df_selected.iterrows():
         team = row["Team"]
+        opponent = row["Opponent"]
+        local_time = row.get("Local Time", "")
+        is_home = row["Location"] == "Home"
+        if is_home:
+            tooltip = f"{opponent} @ {team}: {local_time}"
+        else:
+            tooltip = f"{team} @ {opponent}: {local_time}"
+
         stadium_name, coords = team_stadium_coords.get(team, (None, None))
         if coords:
             route.append(coords)
             folium.Marker(
                 coords,
-                tooltip=f"{row['Away Team']} @ {row['Home Team']}: {row['Local Time']}",
-                popup=row["Stadium"]
+                tooltip=tooltip,
+                popup=stadium_name
             ).add_to(m)
 
     if len(route) > 1:
