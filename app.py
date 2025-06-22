@@ -76,7 +76,7 @@ if st.session_state.results:
                                          value=1,
                                          step=1)
 
-    df_selected = df[df["Itinerary"] == (selected_itinerary)].sort_values(by="Date", ascending=True)
+    df_selected = df[df["Itinerary"] == (selected_itinerary-1)].sort_values(by="Date", ascending=True)
     df_selected["Local Time"] = df_selected["Local Time"].apply(pretty_time)
     st.dataframe(df_selected.drop(columns =['Start Date', 'End Date']), use_container_width=True)
 
