@@ -68,12 +68,14 @@ if st.session_state.results:
 
     st.success(f"Found {len(st.session_state.results)} possible itineraries.")
 
+    max_index = df['Itinerary'].max() + 1
     selected_itinerary = st.number_input("Which itinerary to view?", 
-                                         min_value=0, 
-                                         max_value=df['Itinerary'].max(), 
-                                         value=0)
+                                         min_value=1, 
+                                         max_value=max_index, 
+                                         value=1,
+                                         step=1)
 
-    df_selected = df[df["Itinerary"] == selected_itinerary].sort_values(by="Date", ascending=True)
+    df_selected = df[df["Itinerary"] == (selected_itinerary - 1)].sort_values(by="Date", ascending=True)
     st.dataframe(df_selected, use_container_width=True)
 
     m = folium.Map(location=[39.5, -98.35], zoom_start=4)
@@ -107,5 +109,8 @@ if st.session_state.results:
         miles = distances_between_stadiums.get((team1, team2), 0)
         total_distance += miles
         distances_text += f"{team1} to {team2}: {miles} miles\n"
+
+    st.markdown(f"**Total distance:** {total_distance} miles")
+    st.text(distances_text)
 
 
