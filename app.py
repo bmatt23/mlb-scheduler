@@ -90,10 +90,12 @@ if st.session_state.results:
         is_home = row["Location"] == "Home"
         if is_home:
             tooltip = f"{opponent} @ {team}: {local_time}"
+            stadium_key = team
         else:
             tooltip = f"{team} @ {opponent}: {local_time}"
+            stadium_key = opponent
 
-        stadium_name, coords = team_stadium_coords.get(team, (None, None))
+        stadium_name, coords = team_stadium_coords.get(stadium_key, (None, None))
         if coords:
             route.append(coords)
             folium.Marker(
