@@ -95,6 +95,7 @@ def itineraries_to_dataframe(itineraries):
                 "End Date": itin["End Date"].date(),
                 "Team": game["Team"],
                 "Date": game["Date"].date(),
+                "Local Time": game["Local Time"],
                 "Day": game["Day"],
                 "Opponent": game["Opponent"],
                 "Location": game["Location"],

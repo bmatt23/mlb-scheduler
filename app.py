@@ -75,7 +75,7 @@ if st.session_state.results:
                                          value=1,
                                          step=1)
 
-    df_selected = df[df["Itinerary"] == (selected_itinerary - 1)].sort_values(by="Date", ascending=True)
+    df_selected = df[df["Itinerary"] == (selected_itinerary)].sort_values(by="Date", ascending=True)
     st.dataframe(df_selected, use_container_width=True)
 
     m = folium.Map(location=[39.5, -98.35], zoom_start=4)
@@ -88,8 +88,8 @@ if st.session_state.results:
             route.append(coords)
             folium.Marker(
                 coords,
-                tooltip=f"{team} ({row['Date']})",
-                popup=stadium_name
+                tooltip=f"{row['Away Team']} @ {row['Home Team']}: {row['Local Time']}",
+                popup=row["Stadium"]
             ).add_to(m)
 
     if len(route) > 1:
