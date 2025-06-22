@@ -1,6 +1,6 @@
 import pandas as pd
 from itertools import permutations
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 def build_games_lookup(schedule):
     rows = []
@@ -17,6 +17,15 @@ def build_games_lookup(schedule):
             })
     return pd.DataFrame(rows)
 
+def pretty_time(timestr):
+    # If it's already AM/PM, just return as is
+    if 'AM' in str(timestr) or 'PM' in str(timestr):
+        return str(timestr)
+    try:
+        t = datetime.strptime(str(timestr), "%H:%M:%S")
+        return t.strftime("%I:%M %p").lstrip("0")
+    except Exception:
+        return str(timestr)
 
 def find_team_itineraries(
     games_df,

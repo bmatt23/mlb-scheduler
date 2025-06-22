@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-from helpers import find_team_itineraries, itineraries_to_dataframe, team_stadium_coords, build_games_lookup
+from datetime import datetime
+from helpers import find_team_itineraries, itineraries_to_dataframe, team_stadium_coords, build_games_lookup, pretty_time
 
 df_dist = pd.read_excel("mlb_distances.xlsx")
 
@@ -18,7 +19,7 @@ for _, row in df_dist.iterrows():
 
 
 
-raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1, dtype={'Local Time': str})
+raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1)
 games_df = build_games_lookup(raw_df)
 games_df["Date"] = pd.to_datetime(games_df["Date"])
 st.title("MLB Itinerary Finder")
@@ -76,6 +77,7 @@ if st.session_state.results:
                                          step=1)
 
     df_selected = df[df["Itinerary"] == (selected_itinerary)].sort_values(by="Date", ascending=True)
+    df_selected["Local Time"] = df_selected["Local Time"].apply(pretty_time)
     st.dataframe(df_selected, use_container_width=True)
 
     m = folium.Map(location=[39.5, -98.35], zoom_start=4)
