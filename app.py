@@ -26,7 +26,7 @@ st.title("MLB Itinerary Finder")
 
 st.sidebar.header("Trip Filters")
 selected_teams = st.sidebar.multiselect("Teams you want to see", sorted(games_df["Team"].unique()))
-selected_days = st.sidebar.multiselect("Preferred days of athe week", 
+selected_days = st.sidebar.multiselect("Preferred days of the week", 
     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 months = ["March", "April", "May", "June", "July", "August", "September", "October"]
 selected_months = st.sidebar.multiselect("Filter by month", months)
