@@ -12,7 +12,8 @@ def build_games_lookup(schedule):
                 "Location": loc,
                 "Date": row["Game Date"],
                 "Day": row["Day of Week"],
-                "Stadium": row["Location"]
+                "Stadium": row["Location"],
+                "Local Time": row["Local Time"]
             })
     return pd.DataFrame(rows)
 
