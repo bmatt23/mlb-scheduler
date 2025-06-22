@@ -18,7 +18,7 @@ for _, row in df_dist.iterrows():
 
 
 
-raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1)
+raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1, dtype={'Local Time': str})
 games_df = build_games_lookup(raw_df)
 games_df["Date"] = pd.to_datetime(games_df["Date"])
 st.title("MLB Itinerary Finder")
@@ -116,9 +116,9 @@ if st.session_state.results:
         team2 = teams_in_route[i + 1]
         miles = distances_between_stadiums.get((team1, team2), 0)
         total_distance += miles
-        distances_text += f"{team1} to {team2}: {miles} miles\n"
+        distances_text += f"{team1} to {team2}: {round(miles)} miles\n"
 
-    st.markdown(f"**Total distance:** {total_distance} miles")
+    st.markdown(f"**Total distance:** {round(total_distance)} miles")
     st.text(distances_text)
 
 
