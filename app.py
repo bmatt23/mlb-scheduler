@@ -28,7 +28,7 @@ selected_teams = st.sidebar.multiselect("Teams you want to see", sorted(games_df
 selected_days = st.sidebar.multiselect("Preferred days of the week", 
     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 months = ["All Months", "March", "April", "May", "June", "July", "August", "September", "October"]
-selected_month = st.selectbox("Filter by month", months)
+selected_month = st.sidebar.multiselect("Filter by month", months)
 max_span = st.sidebar.slider("Max number of days", 1, 14, len(selected_teams) or 3)
 
 home_teams = st.sidebar.multiselect("Must be home team", selected_teams)
