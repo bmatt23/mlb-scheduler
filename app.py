@@ -19,9 +19,13 @@ home_teams = st.sidebar.multiselect("Must be home team", selected_teams)
 away_teams = st.sidebar.multiselect("Must be away team", selected_teams)
 
 
+if 'results' not in st.session_state:
+    st.session_state.results = None
+
 if st.sidebar.button("Find Itineraries"):
     if not selected_teams:
         st.warning("Please select at least one team.")
+        st.session_state.results = None
     else:
         results = find_team_itineraries(
             games_df,
@@ -31,40 +35,42 @@ if st.sidebar.button("Find Itineraries"):
             home_teams=home_teams or None,
             away_teams=away_teams or None
         )
-
         if not results:
             st.error("No itineraries found. Try loosening filters.")
+            st.session_state.results = None
         else:
-            df = itineraries_to_dataframe(results)
-            df["Itinerary"] = df.groupby(["Start Date", "End Date"]).ngroup()
+            st.session_state.results = results
 
-            st.success(f"Found {len(results)} possible itineraries.")
+if st.session_state.results:
+    df = itineraries_to_dataframe(st.session_state.results)
+    df["Itinerary"] = df.groupby(["Start Date", "End Date"]).ngroup()
 
+    st.success(f"Found {len(st.session_state.results)} possible itineraries.")
 
-            selected_itinerary = st.number_input("Which itinerary to view?", 
-                                                 min_value=0, 
-                                                 max_value=df['Itinerary'].max(), 
-                                                 value=0)
+    selected_itinerary = st.number_input("Which itinerary to view?", 
+                                         min_value=0, 
+                                         max_value=df['Itinerary'].max(), 
+                                         value=0)
 
-            df_selected = df[df["Itinerary"] == selected_itinerary]
-            st.dataframe(df_selected, use_container_width=True)
+    df_selected = df[df["Itinerary"] == selected_itinerary]
+    st.dataframe(df_selected, use_container_width=True)
 
+    m = folium.Map(location=[39.5, -98.35], zoom_start=4)
 
-            m = folium.Map(location=[39.5, -98.35], zoom_start=4)
+    route = []
+    for _, row in df_selected.iterrows():
+        team = row["Team"]
+        stadium_name, coords = team_stadium_coords.get(team, (None, None))
+        if coords:
+            route.append(coords)
+            folium.Marker(
+                coords,
+                tooltip=f"{team} ({row['Date']})",
+                popup=stadium_name
+            ).add_to(m)
 
-            route = []
-            for _, row in df_selected.iterrows():
-                team = row["Team"]
-                stadium_name, coords = team_stadium_coords.get(team, (None, None))
-                if coords:
-                    route.append(coords)
-                    folium.Marker(
-                        coords,
-                        tooltip=f"{team} ({row['Date']})",
-                        popup=stadium_name
-                    ).add_to(m)
+    if len(route) > 1:
+        folium.PolyLine(route, color="blue", weight=3).add_to(m)
 
-            if len(route) > 1:
-                folium.PolyLine(route, color="blue", weight=3).add_to(m)
+    st_folium(m, width=800, height=500)
 
-            st_folium(m, width=800, height=500)
