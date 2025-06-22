@@ -104,7 +104,7 @@ def itineraries_to_dataframe(itineraries):
     return pd.DataFrame(all_rows)
 
 team_stadium_coords = {
-    "Diamondbacks": ["Chase Field - Phoenix", (33.4455, -112.0667)],
+    "D-backs": ["Chase Field - Phoenix", (33.4455, -112.0667)],
     "Braves": ["Truist Park - Atlanta", (33.8908, -84.4678)],
     "Orioles": ["Oriole Park at Camden Yards - Baltimore", (39.2839, -76.6218)],
     "Red Sox": ["Fenway Park - Boston", (42.3467, -71.0972)],
