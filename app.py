@@ -114,13 +114,20 @@ if st.session_state.results:
     total_distance = 0
     distances_text = ""
 
-    teams_in_route = list(df_selected["Team"])
-    for i in range(len(teams_in_route) - 1):
-        team1 = teams_in_route[i]
-        team2 = teams_in_route[i + 1]
-        miles = distances_between_stadiums.get((team1, team2), 0)
+    stadiums_in_route = []
+    for _, row in df_selected.iterrows():
+        if row["Location"] == "Home":
+            stadiums_in_route.append(row["Team"])
+        else:
+            stadiums_in_route.append(row["Opponent"])
+
+
+    for i in range(len(stadiums_in_route) - 1):
+        stadium1 = stadiums_in_route[i]
+        stadium2 = stadiums_in_route[i + 1]
+        miles = distances_between_stadiums.get((stadium1, stadium2), 0)
         total_distance += miles
-        distances_text += f"{team1} to {team2}: {round(miles)} miles\n"
+        distances_text += f"{stadium1} to {stadium2}: {round(miles)} miles\n"
 
     st.markdown(f"**Total distance:** {round(total_distance)} miles")
     st.text(distances_text)
