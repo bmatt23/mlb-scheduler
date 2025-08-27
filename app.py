@@ -17,16 +17,24 @@ for _, row in df_dist.iterrows():
     distances_between_stadiums[(team1, team2)] = miles
     distances_between_stadiums[(team2, team1)] = miles
 
+st.title("MLB Itinerary Finder")
 
+year = st.sidebar.selectbox(
+    "Season Year",
+    options=["2025", "2026"]
+)
 
-raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1)
+if year == "2025":
+    raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1)
+else:
+    raw_df = pd.read_excel("mlb_2026.xlsx", header=1)
 games_df = build_games_lookup(raw_df)
 games_df["Date"] = pd.to_datetime(games_df["Date"])
-st.title("MLB Itinerary Finder")
+
 
 st.sidebar.header("Trip Filters")
 selected_teams = st.sidebar.multiselect("Teams you want to see", sorted(games_df["Team"].unique()))
-selected_days = st.sidebar.multiselect("Preferred days of athe week", 
+selected_days = st.sidebar.multiselect("Preferred days of the week", 
     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 months = ["March", "April", "May", "June", "July", "August", "September", "October"]
 selected_months = st.sidebar.multiselect("Filter by month", months)
