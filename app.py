@@ -27,7 +27,7 @@ year = st.sidebar.selectbox(
 if year == "2025":
     raw_df = pd.read_excel("mlb_schedule_2025_for_reddit.xlsx", header=1)
 else:
-    raw_df = pd.read_excel("mlb_2026.xlsx", header=1)
+    raw_df = pd.read_excel("mlb_2026.xlsx", header=0)
 games_df = build_games_lookup(raw_df)
 games_df["Date"] = pd.to_datetime(games_df["Date"])
 
