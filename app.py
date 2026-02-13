@@ -5,7 +5,7 @@ from streamlit_folium import st_folium
 from datetime import datetime
 from helpers import find_team_itineraries, itineraries_to_dataframe, team_stadium_coords, build_games_lookup, pretty_time
 
-df_dist = pd.read_excel("mlb_2026.xlsx")
+df_dist = pd.read_excel("mlb_distances.xlsx")
 
 # Build distances dictionary
 distances_between_stadiums = {}
