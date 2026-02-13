@@ -18,14 +18,22 @@ def build_games_lookup(schedule):
     return pd.DataFrame(rows)
 
 def pretty_time(timestr):
-    # If it's already AM/PM, just return as is
-    if 'AM' in str(timestr) or 'PM' in str(timestr):
-        return str(timestr)
+    if timestr is None:
+        return "TBA"
+    s = str(timestr).strip()
+    if s.lower() in {"Not Published Yet"}:
+        return "TBA"
+
+    # Already AM/PM
+    if "am" in s.lower() or "pm" in s.lower():
+        return s
+
+    # Try 24h format
     try:
-        t = datetime.strptime(str(timestr), "%H:%M:%S")
+        t = datetime.strptime(s, "%H:%M:%S")
         return t.strftime("%I:%M %p").lstrip("0")
     except Exception:
-        return str(timestr)
+        return s
 
 def find_team_itineraries(
     games_df,
